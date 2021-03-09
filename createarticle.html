@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Firebase Form</title>
+    <link rel="stylesheet" href="frontend/css/main.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0/jquery.min.js"></script>
+    <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-app.js"></script>
+
+    <!-- Add Firebase products that you want to use -->
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase-auth.js"></script>
+  </head>
+
+  <body>
+    <a class="back" href="index.html"> < </a>
+    <div>
+      <p class="whiteP">Header:</p>
+
+      <input type="text" placeholder="Header" id="name" />
+
+      <p class="whiteP">Body:</p>
+
+      <input type="text" placeholder="Body" id="city" />
+      <br /><br />
+
+      <p class="whiteP"> Headline: </p>
+      <input type="text" placeholder="Headline" id="tag" />
+
+      <br /><br />
+      <input type="submit" value="submit" class="submit" id="submit" />
+
+      <p class="whiteP">To use this first write up the document in whatever word program you want. Next copy and paste the body of the text into the body box, then the header into the header box. Then once you have done that Decide what the headline will be and write it into the headline box. Then press the submit button.</p>
+    </div>
+
+    <script>
+      $(document).ready(function() {
+        // Initialize Firebase
+        var config = {
+          apiKey: "AIzaSyAblw3q0TU1rf4yCO4P5N5N9HSFUCNGNwY",
+          authDomain: "astroapp-ece73.firebaseapp.com",
+          projectId: "astroapp-ece73",
+          storageBucket: "astroapp-ece73.appspot.com",
+          messagingSenderId: "291907672864",
+          appId: "1:291907672864:web:cefa3084c1a3ea83c49545",
+          measurementId: "G-7JEJ0MF9Y1"
+        };
+
+        firebase.initializeApp(config);
+
+        var database = firebase.firestore();
+
+        $('#submit').on('click', function() {
+          var BodyValue = $('#name').val();
+          var TitleValue = $('#city').val();
+          var dataObject = $('#tag').val();
+
+          docRef = database.collection('news').doc(dataObject);
+
+          docRef.set({
+            Body: BodyValue,
+            Title: TitleValue
+          }) 
+          
+
+        });
+      });
+    </script>
+  </body>
+</html>

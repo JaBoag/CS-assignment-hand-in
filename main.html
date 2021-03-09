@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="frontend/css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astroapp main page </title>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+
+</head>
+<body>
+<a class="back" href="index.html"> < </a>
+<script>
+
+function getCookie(name) {
+    var dc = document.cookie;
+    var prefix = name + "=";
+    var begin = dc.indexOf("; " + prefix);
+    if (begin == -1) {
+        begin = dc.indexOf(prefix);
+        if (begin != 0) return null;
+    }
+    else
+    {
+        begin += 2;
+        var end = document.cookie.indexOf(";", begin);
+        if (end == -1) {
+        end = dc.length;
+        }
+    }
+    // because unescape has been deprecated, replaced with decodeURI
+    //return unescape(dc.substring(begin + prefix.length, end));
+    return decodeURI(dc.substring(begin + prefix.length, end));
+} 
+
+
+
+function CheckCookie(){
+        var login = getCookie("login");
+        if (login == null) {
+          location.href = "login.html";
+}};
+  CheckCookie();
+  
+// pulling data from the weather database
+function weatherBalloon( cityID ) {
+  fetch('https://api.openweathermap.org/data/2.5/weather?id=' + "2655378"+ '&appid=' + '19a17593ca588ff19e3c3da509e5b120')  
+  .then(function(resp) { return resp.json() }) // Convert data to json
+  .then(function(data) {
+    console.log("cloud cover: " + data.clouds.all + "%");
+  })
+  .catch(function() {
+    // catch any errors
+  });
+}
+
+// pulling planet data
+window.onload = function() {
+  weatherBalloon( 6167865 );
+}
+
+function readTextFile(file, callback) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            callback(rawFile.responseText);
+        }
+    }
+    rawFile.send(null);
+}
+
+//usage
+readTextFile("testdata.json", function(text){
+    var data = JSON.parse(text);
+    var i;
+    for (i =0; i< data.length; i++)
+      console.log(data[i]);
+});
+
+</script>
+<script>
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAblw3q0TU1rf4yCO4P5N5N9HSFUCNGNwY",
+    authDomain: "astroapp-ece73.firebaseapp.com",
+    projectId: "astroapp-ece73",
+    storageBucket: "astroapp-ece73.appspot.com",
+    messagingSenderId: "291907672864",
+    appId: "1:291907672864:web:cefa3084c1a3ea83c49545",
+    measurementId: "G-7JEJ0MF9Y1"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.firestore();
+</script>
+
+
+
+<script>
+//preventing bypassing login
+firebase.auth().onAuthStateChanged(user => {
+  if (user) {
+    console.log("in")
+  }
+  else {
+    console.log("out")
+  }
+})
+
+
+//creating news pages
+var docRef = db.collection("news");
+var docID = "very cool ID";
+var docTitle = "Real cool title";
+var docBody = "body";
+
+
+
+//writing the data
+docRef.doc(docID).set({
+    Title: docTitle,
+    Body: docBody,
+})
+
+// creating the link
+.then((docRef) => {
+  //getting the list of doc id's
+  db.collection("news").get().then(function(querySnapshot) {
+    querySnapshot.forEach(function(doc) {
+    console.log(doc.id);
+    // creating a link for each doc ID
+    console.log("Document written with ID: ", doc.id);
+    var a = document.createElement('a');
+    var div = document.createElement('div')
+    var div2 = document.createElement('div')
+    var div3 = document.createElement('div')
+    var linkText = document.createTextNode(doc.id);
+    a.appendChild(linkText);
+    div3.appendChild(div2)
+    div2.appendChild(div)
+    div.appendChild(a)
+    var linkUrl = "article.html?id=" + doc.id;
+    a.href = linkUrl;
+    document.body.appendChild(div3);
+    });
+  });
+})
+.catch((error) => {
+    console.error("Error adding document: ", error);
+});
+// This is to create the more news coming soon text at the bottom of the page.
+
+var moreNewsText = document.createTextNode("That's all the news for now! But no doubt there will be more news soon...")
+var con1 = document.createElement(container);
+var con2 = document.createElement(container);
+
+con1.appendChild(con2);
+con2.appendChild(moreNewsText);
+document.body.appendChild(con1);
+
+
+</script>
+
+<script src="testdata.json">
+
+  // Reading JSON
+  var mydata = JSON.parse(testdata);
+  console.log(mydata[0].dataname);
+
+
+</script>
+
+
+</body>
+</html>

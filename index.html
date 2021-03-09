@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="frontend/css/main.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Astroapp main page </title>
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+
+</head>
+<body>
+  <a class ="back" href="help.html"> Help </a>
+  <a class ="backalt" href="Login.html"> Admin </a>
+<script>
+// pulling data from the weather database
+function weatherBalloon( cityID ) {
+  fetch('https://api.openweathermap.org/data/2.5/weather?id=' + "2655378"+ '&appid=' + '19a17593ca588ff19e3c3da509e5b120')  
+  .then(function(resp) { return resp.json() }) // Convert data to json
+  .then(function(data) {
+    console.log("cloud cover: " + data.clouds.all + "%");
+    var node = document.createElement("p");
+    var weatherNode = document.createTextNode(data.clouds.all + "% Cloud Cover in Dorset")
+    node.appendChild(weatherNode);
+    document.getElementById("weather").appendChild(node);
+  })
+  .catch(function() {
+    // catch any errors
+  });
+}
+
+// pulling planet data
+window.onload = function() {
+  weatherBalloon( 6167865 );
+}
+
+
+</script>
+<div class="container">
+<!--Three cards, two links, middle one needs to have the cloud cover printed too it. This seriously should be like 5 minutes,
+maybe a bit more for the printing cloud cover -->
+<section class="options">
+<div class="news"> <a href="main.html">Latest News</a> </div>
+<div class="weather" id="weather"></div>
+  <div class="solar"> <a href="planets.html">Explore the Solar System</a> </div>
+</section>
+</div>
+</body>

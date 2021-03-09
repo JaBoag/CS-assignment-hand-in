@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="frontend/css/main.css">
+    
+
+</head>
+<body>
+<a class="back" href="main.html"> < </a>
+<div id="headerDiv"></div>
+<div id="bodyDiv"></div>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+
+<!-- TODO: Add SDKs for Firebase products that you want to use
+    https://firebase.google.com/docs/web/setup#available-libraries -->
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-analytics.js"></script>
+
+<script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.6/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+
+<script>
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  var firebaseConfig = {
+    apiKey: "AIzaSyAblw3q0TU1rf4yCO4P5N5N9HSFUCNGNwY",
+    authDomain: "astroapp-ece73.firebaseapp.com",
+    projectId: "astroapp-ece73",
+    storageBucket: "astroapp-ece73.appspot.com",
+    messagingSenderId: "291907672864",
+    appId: "1:291907672864:web:cefa3084c1a3ea83c49545",
+    measurementId: "G-7JEJ0MF9Y1"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.firestore();
+</script>
+<script>
+    // getting the para
+    const queryString = window.location.search;
+
+    const urlParams = new URLSearchParams(queryString);
+
+    const page_type = urlParams.get('id')
+
+    console.log(page_type);
+    // looking up the specific document
+    var docRef = db.collection("news").doc(page_type);
+    docRef.get().then((doc) => {
+        if (doc.exists) {
+            console.log("Document data:", doc.data());
+            var pageData = doc.data();
+            var pNode = document.createElement("p");
+            var hNode = document.createElement("h1");
+            var paraNode = document.createTextNode(pageData["Body"])
+            var headerNode = document.createTextNode(pageData["Title"])
+            pNode.appendChild(paraNode);
+            hNode.appendChild(headerNode);
+            document.getElementById("headerDiv").appendChild(hNode);
+            document.getElementById("bodyDiv").appendChild(pNode);
+            
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+    }).catch((error) => {
+        console.log("Error getting document:", error);
+    });
+
+
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="frontend/css/main.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Planets</title>
+</head>
+<body>
+    <p id="thanks">Thanks to Wikipedia for the images and information</p>
+    <a class="back" href="index.html"> < </a>
+<section class="cards">    
+    <!--Add a series of cards, with an image of each planet. It should have a link to learn more and gallery with the position of the planets in the corner-->
+<div class="planetcard">
+<img src="https://upload.wikimedia.org/wikipedia/commons/0/02/OSIRIS_Mars_true_color.jpg">
+<h1>Mars</h1>
+<ul>
+    <li><a href="learnmore/marsl.html">Learn More</a></li>
+    <li><a href="gallery/marsg.html">Gallery</a></li>
+</ul>
+<p>Current Position</p>
+<!--Planet location will be appended and repeat every minute or so-->
+<div id="0"></div>
+<div id="1"></div>
+</div>
+
+<div class="planetcard">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Mercury_in_color_-_Prockter07-edit1.jpg/1200px-Mercury_in_color_-_Prockter07-edit1.jpg">
+    <h1>Mercury</h1>
+    <ul>
+        <li><a href="learnmore/mercuryl.html">Learn More</a></li>
+        <li><a href="gallery/mercuryg.html">Gallery</a></li>
+    </ul>
+    <p>Current Position</p>
+    <!--Planet location will be appended and repeat every minute or so-->
+    <div id="2"></div>
+    <div id="3"></div>
+</div>
+
+<div class="planetcard">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a9/PIA23791-Venus-NewlyProcessedView-20200608.jpg">
+    <h1>Venus</h1>
+    <ul>
+        <li><a href="learnmore/venusl.html">Learn More</a></li>
+        <li><a href="gallery/venusg.html">Gallery</a></li>
+    </ul>
+    <p>Current Position</p>
+    <!--Planet location will be appended and repeat every minute or so-->
+    <div id="4"></div>
+    <div id="5"></div>
+</div>
+
+<div class="planetcard">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2b/Jupiter_and_its_shrunken_Great_Red_Spot.jpg">
+    <h1>Jupiter</h1>
+    <ul>
+        <li><a href="learnmore/jupiterl.html">Learn More</a></li>
+        <li><a href="gallery/jupiterg.html">Gallery</a></li>
+    </ul>
+    <p>Current Position</p>
+    <!--Planet location will be appended and repeat every minute or so-->
+    <div id="6"></div>
+    <div id="7"></div>
+</div>
+
+<div class="planetcard">
+    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Uranus2.jpg/1200px-Uranus2.jpg">
+    <h1>Uranus</h1>
+    <ul>
+        <li><a href="learnmore/uranusl.html">Learn More</a></li>
+        <li><a href="gallery/uranusg.html">Gallery</a></li>
+    </ul>
+    <p>Current Position</p>
+    <!--Planet location will be appended and repeat every minute or so-->
+    <div id="8"></div>
+    <div id="9"></div>
+</div>
+    
+    <div class="planetcard">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Neptune_-_Voyager_2_%2829347980845%29_flatten_crop.jpg">
+        <h1>Neptune</h1>
+        <ul>
+            <li><a href="learnmore/neptune.html">Learn More</a></li>
+            <li><a href="gallery/neptuneg.html">Gallery</a></li>
+        </ul>
+        <p>Current Position</p>
+        <!--Planet location will be appended and repeat every minute or so-->
+        <div id="10"></div>
+        <div id="11"></div>
+</div>
+    
+    <div class="planetcard">
+        <img src="/frontend/images/saturn.png">
+        <h1>Saturn</h1>
+        <ul>
+            <li><a href="learnmore/saturnl.html">Learn More</a></li>
+            <li><a href="gallery/saturng.html">Gallery</a></li>
+        </ul>
+        <p>Current Position</p>
+        <!--Planet location will be appended and repeat every minute or so-->
+        <div id="12"></div>
+        <div id="13"></div>
+</div>
+<script>
+
+
+function readTextFile(file, callback) {
+    var rawFile = new XMLHttpRequest();
+    rawFile.overrideMimeType("application/json");
+    rawFile.open("GET", file, true);
+    rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            callback(rawFile.responseText);
+        }
+    }
+    rawFile.send(null);
+}
+
+//Literally the dumbest fix imaginable
+function buggedLoopFix(i, data){
+    var pData = data[i];
+    console.log(pData)
+    var node = document.createElement("p");
+    var coordNode = document.createTextNode(pData)
+    node.appendChild(coordNode);
+    document.getElementById(i).appendChild(node);
+
+}
+
+//usage
+readTextFile("testdata.json", function(text){
+    var data = JSON.parse(text);
+    var i;
+    for (i =0; i< data.length; i++)
+        buggedLoopFix(i, data)
+});
+
+</script>
+
+        
+</section>
+</body>
+</html>
